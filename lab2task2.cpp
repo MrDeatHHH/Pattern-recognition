@@ -8,8 +8,6 @@ using namespace std;
 #define triesAmount 100
 #define steps 5
 
-#define UTIME (unsigned int)(time(0))	
-
 // Macros for time in miliseconds
 #define timeUsedMiliSeconds(start, end, dimention)\
 	cout << "Time used for " << dimention << " - " <<\
@@ -316,8 +314,12 @@ void checkD2(const int length2, const int left2[2], const int right2[2], int ste
 	timeUsedMiliSeconds(start2, end2, "D2 smart calc");
 
 	cout << smartSum << endl;
-
+    
+    for (int i = 0; i < length2; ++i)
+        delete[] smartSum2[i];
 	delete[] smartSum2;
+    for (int i = 0; i < length2; ++i)
+        delete[] mas2[i];
 	delete[] mas2;
 }
 
@@ -386,13 +388,27 @@ void checkD3(const int length3, const int left3[3], const int right3[3], int ste
 
 	cout << smartSum << endl;
 
+    for (int i = 0; i < length3; ++i)
+    {
+        for (int j = 0; j < length3; ++j)
+            delete[] smartSum3[i][j];
+        
+        delete[] smartSum3[i];
+    }
 	delete[] smartSum3;
+    for (int i = 0; i < length3; ++i)
+    {
+        for (int j = 0; j < length3; ++j)
+            delete[] mas3[i][j];
+
+        delete[] mas3[i];
+    }
 	delete[] mas3;
 }
 
 int main()
 {
-	srand(UTIME);
+    srand((unsigned int)(time(0)));
 
 	const int length1 = 1000000;
 	const int left1 = 10;
