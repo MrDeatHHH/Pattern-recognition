@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <cassert>
 
 using namespace std;
 
@@ -261,6 +262,9 @@ void checkD1(const int length1, const int left1, const int right1, int step)
 
 	delete[] smartSum1;
 	delete[] mas1;
+
+    assert(sum1 == smartSum);
+    cout << "Assertion passed" << endl;
 }
 
 // Testing 2-dimentional algorithms
@@ -321,6 +325,9 @@ void checkD2(const int length2, const int left2[2], const int right2[2], int ste
     for (int i = 0; i < length2; ++i)
         delete[] mas2[i];
 	delete[] mas2;
+
+    assert(sum2 == smartSum);
+    cout << "Assertion passed" << endl;
 }
 
 // Testing 3-dimentional algorithms
@@ -404,6 +411,9 @@ void checkD3(const int length3, const int left3[3], const int right3[3], int ste
         delete[] mas3[i];
     }
 	delete[] mas3;
+
+    assert(sum3 == smartSum);
+    cout << "Assertion passed" << endl;
 }
 
 int main()
