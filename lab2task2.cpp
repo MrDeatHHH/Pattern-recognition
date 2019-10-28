@@ -457,7 +457,7 @@ int main()
 	for (int i = 0; i < steps; ++i)
 	{
 		D3 << timeWastedD3[i][0] << ";"
-			<< timeWastedD3[i][1] << ";"
+		    << timeWastedD3[i][1] << ";"
 			<< timeWastedD3[i][2] << ";"
 			<< length3 * (i + 1) << ";"
 			<< triesAmount << endl;
