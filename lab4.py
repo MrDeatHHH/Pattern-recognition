@@ -101,4 +101,35 @@ for i in range(n):
 
         it.iternext()
 
+    # Counting all d* for the row in the reverse order
+    it = np.nditer(dmap[i], flags=['f_index'], op_flags=['writeonly'])
+    while not it.finished:
+
+        if (it.index == 0):
+
+            # For the last
+            it[0] = f[-1].argmin()
+        else:
+
+            # For others
+            it1 = np.nditer(ftemp, flags=['f_index'], op_flags=['writeonly'])
+                
+            while not it1.finished:
+
+                it1[0] = f[m - 1 - it.index][it1.index] + g[dmap[i][it.index - 1]][it1.index]
+                it1.iternext()
+
+            it[0] = ftemp.argmin()
+
+        it.iternext()
+
 print('100%')
+
+# Upscaling image and flipping dmap along the second axis
+imout = Image.fromarray(np.flip(dmap, 1))
+imout = imout.resize(initSize, projection)
+
+# Showing and saving the result
+plt.imshow(np.array(imout), cmap = 'gray')
+plt.savefig(pathSave)
+plt.show()
