@@ -18,13 +18,31 @@ alpha = 100
 
 im1 = Image.open(pathL)
 
-pix = np.array(im1)
+initSize = im1.size
+
+# Downscalng image, to decrease computational time
+if max(initSize) > 1000:
+    
+    scale = 1. / 4.
+    projection = Image.BICUBIC
+else:
+    
+    scale = 1. / 2.
+    projection = Image.BILINEAR
+    
+# Loading and resizing Left and Right images
+im2 = im1.resize((int(im1.size[0] * scale), int(im1.size[1] * scale)), Image.NEAREST)
+pix = np.array(im2)
 L = rgb2gray(pix)
 
 im1 = Image.open(pathR)
 
-pix = np.array(im1)
+im2 = im1.resize((int(im1.size[0] * scale), int(im1.size[1] * scale)), Image.NEAREST)
+pix = np.array(im2)
 R = rgb2gray(pix)
+
+# Downscaling disparity, to decrease computational time
+maxD = int( float(maxD) * scale) + 1
 
 n = L.shape[0]
 m = L.shape[1]
