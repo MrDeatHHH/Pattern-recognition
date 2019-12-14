@@ -65,3 +65,40 @@ dmap = np.zeros(L.shape, dtype = int)
 f = np.zeros((m, maxD + 1), dtype = L.dtype)
 
 ftemp = np.zeros(maxD + 1, dtype = L.dtype)
+
+# Iterating over all rows
+for i in range(n):
+
+    if (i % int((n / 10)) == 0):
+        print('%d%%' % (i / (n / 100)))
+
+    # Going throw all pixels in the row
+    it = np.nditer(L[i], flags=['f_index'], op_flags=['readonly'])
+    while not it.finished:
+
+        # Counting all f_i(d_i)
+        it1 = np.nditer(f[it.index], flags=['f_index'], op_flags=['writeonly'])
+        
+        if (it.index == 0):
+            # For the first pixel
+            while not it1.finished:
+            
+                it1[0] = H(i, it.index, it1.index)
+                it1.iternext()
+        else:
+            # For other pixels
+            while not it1.finished:
+                
+                it2 = np.nditer(ftemp, flags=['f_index'], op_flags=['writeonly'])
+                
+                while not it2.finished:
+
+                    it2[0] = f[it.index - 1][it2.index] + g[it1.index][it2.index]
+                    it2.iternext()
+                    
+                it1[0] = H(i, it.index, it1.index) + ftemp.min()
+                it1.iternext()
+
+        it.iternext()
+
+print('100%')
