@@ -61,9 +61,9 @@ for it in range(max_iter):
             p_k_x[m][n] = p_x_k[n][m] * p_k[m] / np.sum(p_x_k[n] * p_k)
 
     if it == 0:
-        L = np.prod(np.sum(p_x_k, axis = 1))
+        L = np.sum(np.log(np.sum(p_x_k, axis = 1)))
     else:
-        Ln = np.prod(np.sum(p_x_k, axis = 1))
+        Ln = np.sum(np.log(np.sum(p_x_k, axis = 1)))
         assert (L <= Ln), 'Not passed'
         L = Ln
 print("Test passed")
