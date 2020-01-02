@@ -118,6 +118,8 @@ def p(alpha, max_steps = 1000 * amount):
     return alpha
 
 alpha = p([0, 0, 0, 0, 0])
+assert (alpha[1] > 0), 'Not passed'
+print('Test passed')
 print(alpha)
 alpha /= alpha[1]
 a = alpha[2] / (-2)
