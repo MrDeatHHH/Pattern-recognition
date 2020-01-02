@@ -31,3 +31,25 @@ p_k_x = np.transpose(p_k_x)
 p_k = np.zeros(K, float)
 p_x_k = np.zeros((X, K), float)
 p_k_i_j = np.zeros((K, x01_train.shape[1], x01_train.shape[2]), float)
+
+swap = 0
+
+max_iter = 5
+# EM algorithm
+print('Starting algorithm')
+for it in range(max_iter):
+
+    # 1
+    for m in range(K):    
+        p_k[m] = np.sum(p_k_x[m]) / float(X)
+
+    # 2
+    for n in range(K):
+        for i in range(x01_train.shape[1]):
+            for j in range(x01_train.shape[2]):
+                p_k_i_j[n][i][j] = np.sum(np.moveaxis(x01_train, 0, -1)[i][j] * p_k_x[n]) / np.sum(p_k_x[n])
+
+    for n in range(X):
+        for m in range(K):
+            p_x_k[n][m] = np.prod((p_k_i_j[m] ** x01_train[n]) *
+                                  ((1 - p_k_i_j[m]) ** (1 - x01_train[n])))
