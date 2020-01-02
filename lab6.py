@@ -37,3 +37,68 @@ def points(m, c = centre_coordinates + radius_h + 1):
 print('Points coordinates')
 points_coordinates = np.asarray(points(amount))
 #print(points_coordinates)
+
+#Division of points into internal and external
+def division(c, r, p):
+    w_out = np.zeros((p.shape[0], 2))
+    w_in = np.zeros((p.shape[0], 2))
+
+    for i in range(p.shape[0]):
+        dist = math.sqrt((p[i,0] - c[0])**2 + (p[i,1] - c[1])**2)
+        if (dist > r + epsilon):
+            #print('OUT')
+            plt.scatter(points_coordinates[i,0], points_coordinates[i,1], color = "violet")
+            w_out[i] = p[i]
+        elif (dist < r - epsilon):
+            #print('IN')
+            plt.scatter(points_coordinates[i,0], points_coordinates[i,1], color = "blue")
+            w_in[i] = p[i]
+        else:
+            #print('Points on the border')
+            plt.scatter(points_coordinates[i,0], points_coordinates[i,1], color = "r")
+            
+    return w_out, w_in
+
+print('Division of points ')
+params_out = division(centre, radius, points_coordinates)
+w_out = np.asarray(params_out[0])
+w_in =  np.asarray(params_out[1])
+
+w1 = np.all(np.equal(w_out, 0), axis = 1)
+w2 = np.all(np.equal(w_in, 0), axis = 1)
+
+#print('Class w1')
+w1 = np.delete(w_out, np.where(w1 == True), axis = 0)
+#print(w1)
+#print('Class w2')
+w2 = np.delete(w_in, np.where(w2 == True), axis = 0)
+#print(w2)
+
+k_out = w1.shape[0]
+k_in = w2.shape[0]
+
+#Transformation w1 and w2
+e1 = np.ones((k_out, 1))
+n1 = np.ones((1, k_out))
+n1[0] = np.transpose(w1)[0] ** 2 + np.transpose(w1)[1] ** 2
+e2 = np.ones((k_in, 1))
+n2 = np.ones((1, k_in))
+n2[0] = np.transpose(w2)[0] ** 2 + np.transpose(w2)[1] ** 2
+e1 = np.append(e1, np.transpose(n1), axis = 1)
+e2 = np.append(e2, np.transpose(n2), axis = 1)
+w1 = np.append(e1, w1, axis = 1)
+w1 = np.append(w1, [[0, 10, 0, 0]], axis = 0)
+w2 = np.append(e2, w2, axis = 1)
+
+e1 = np.ones((k_out + 1, 1))
+w1 = np.append(w1, e1, axis = 1)
+e2 = np.ones((k_in, 1))
+w2 = (np.append(w2, e2, axis = 1)) * (-1)
+
+#print(w1)
+#print(w2)
+
+#Concatenate w1 and w2
+x = np.concatenate((w1, w2), axis=0)
+#print(x.shape)
+print('---------------------------------------------------')
