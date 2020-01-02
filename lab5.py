@@ -35,6 +35,7 @@ p_k_i_j = np.zeros((K, x01_train.shape[1], x01_train.shape[2]), float)
 swap = 0
 
 max_iter = 5
+L = 0
 # EM algorithm
 print('Starting algorithm')
 for it in range(max_iter):
@@ -58,6 +59,14 @@ for it in range(max_iter):
     for n in range(X):
         for m in range(K):
             p_k_x[m][n] = p_x_k[n][m] * p_k[m] / np.sum(p_x_k[n] * p_k)
+
+    if it == 0:
+        L = np.prod(np.sum(p_x_k, axis = 1))
+    else:
+        Ln = np.prod(np.sum(p_x_k, axis = 1))
+        assert (L <= Ln), 'Not passed'
+        L = Ln
+print("Test passed")
 # Results
 print('Classes')
 for i in range(2):
